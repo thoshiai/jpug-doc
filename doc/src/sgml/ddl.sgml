@@ -3369,7 +3369,7 @@ CREATE TABLE public.products ( ... );
 検索パス内に一致するテーブルがないと、データベースの他のスキーマ内に一致するテーブルがある場合でもエラーが報告されます。
    </para>
 
-  <para>
+   <para>
 <!--
     The ability to create like-named objects in different schemas complicates
     writing a query that references precisely the same objects every time.  It
@@ -4512,14 +4512,21 @@ VALUES ('Albany', NULL, NULL, 'NY');
       </varlistentry>
 
       <varlistentry>
+<!--
        <term>Hash Partitioning</term>
+-->
+       <term>ハッシュパーティション</term>
 
        <listitem>
         <para>
+<!--
          The table is partitioned by specifying a modulus and a remainder for
          each partition. Each partition will hold the rows for which the hash
          value of the partition key divided by the specified modulus will
          produce the specified remainder.
+-->
+各パーティションに対して法と余りを指定することでテーブルをパーティションに分割します。
+各パーティションは、パーティションキーのハッシュ値を指定された法で割った際に指定された余りとなる行を保持します。
         </para>
        </listitem>
       </varlistentry>
@@ -4567,7 +4574,7 @@ VALUES ('Albany', NULL, NULL, 'NY');
 -->
 パーティションテーブルに挿入されるすべての行は、パーティションキーの値に基づいて<firstterm>パーティション</firstterm>の一つに振り向けられます。
 各パーティションはその<firstterm>パーティション境界</firstterm>によって定義されるデータの部分集合を持ちます。
-現在サポートされるパーティション方式には範囲とリストがあり、各パーティションにはそれぞれキーの範囲、あるいはキーのリストが割り当てられます。
+現在サポートされるパーティション方式には範囲、リスト、ハッシュがあります。
    </para>
 
    <para>
@@ -4580,7 +4587,6 @@ VALUES ('Albany', NULL, NULL, 'NY');
 -->
 <firstterm>サブパーティショニング</firstterm>と呼ばれる方法を使って、パーティションそれ自体をパーティションテーブルとして定義することができます。
 パーティションには、他のパーティションとは別に独自のインデックス、制約、デフォルト値を定義できます。
-インデックスは各パーティションで別々に作成されなければなりません。
 パーティションテーブルおよびパーティションの作成についての更なる詳細については<xref linkend="sql-createtable"/>を参照してください。
    </para>
 
@@ -4614,9 +4620,9 @@ VALUES ('Albany', NULL, NULL, 'NY');
     inheritance apply as described in <xref linkend="ddl-inherit"/> with
     some exceptions, most notably:
 -->
-個々のパーティションは継承を背景にパーティションテーブルに紐付けられていますが、前節で説明した継承の機能のうちの一部はパーティションテーブルおよびパーティションでは使用できません。
+個々のパーティションは継承を背景にパーティションテーブルに紐付けられていますが、宣言的パーティションテーブルもしくはそれらのパーティションでは継承の一般的な機能の一部（後述）を使用することはできません。
 例えば、パーティションテーブルのパーティションは、そのパーティションテーブル以外の親を持つことができませんし、また一般のテーブルはパーティションテーブルをその親にしてパーティションテーブルから継承することはできません。
-これはつまり、パーティションテーブルおよびパーティションは一般のテーブルと継承によって繋がることができないということです。
+これはつまり、パーティションテーブルおよびそれらのパーティションは一般のテーブルと継承によって繋がることができないということです。
 パーティションテーブルとそのパーティションを構成するパーティションの階層は継承の階層でもあるので、継承におけるすべての通常の規則が<xref linkend="ddl-inherit"/>で説明したとおりに適用されますが、いくつか例外があります。
 最も重要な例外を以下に示します。
 
@@ -4642,6 +4648,7 @@ VALUES ('Albany', NULL, NULL, 'NY');
        partitioned table is supported as long as there are no partitions.  Once
        partitions exist, using <literal>ONLY</literal> will result in an error
        as adding or dropping constraints on only the partitioned table, when
+#working now.
        partitions exist, is not supported.  Instead, constraints on the
        partitions themselves can be added and (if they are not present in the
        parent table) dropped.
