@@ -4928,7 +4928,7 @@ CREATE INDEX ON measurement (logdate);
         configuration parameter is not disabled in <filename>postgresql.conf</filename>.
         If it is, queries will not be optimized as desired.
 -->
-<filename>postgresql.conf</filename>で設定パラメータ<xref linkend="guc-constraint-exclusion"/>が無効になっていないことを確認します。
+<filename>postgresql.conf</filename>で設定パラメータ<xref linkend="guc-enable-partition-pruning"/>が無効になっていないことを確認します。
 これが無効になっていると、問い合わせが期待通りには最適化されません。
        </para>
       </listitem>
